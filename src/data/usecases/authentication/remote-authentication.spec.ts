@@ -1,23 +1,27 @@
-import { HttpPostClient } from './../../protocols/http/http-post-client';
-import { RemoteAuthentication } from "./remote-authentication";
+import { HttpPostClientSpy } from './../../test/mock-http-client'
+import { RemoteAuthentication } from './remote-authentication'
 
+type SutTypes = {
+  sut: RemoteAuthentication
+  httpPostClientSpy: HttpPostClientSpy
+};
 
-describe("RemoteAuthentication", () => {
-  test("Should call HttpPostClient with correct URL", async () => {
-    class HttpPostClientSpy implements HttpPostClient {
-      url?: string;
+const makeSut = (url: string = 'any_url'): SutTypes => {
+  const httpPostClientSpy = new HttpPostClientSpy()
+  const sut = new RemoteAuthentication(url, httpPostClientSpy)
 
-      async post(url: string): Promise<void> {
-        this.url = url;
-        return Promise.resolve();
-      }
-    }
+  return {
+    sut,
+    httpPostClientSpy
+  }
+}
 
-    const url = "any__url";
-    const httpPostClientSpy = new HttpPostClientSpy();
-    const sut = new RemoteAuthentication(url, httpPostClientSpy);
-    await sut.auth();
+describe('RemoteAuthentication', () => {
+  test('Should call HttpPostClient with correct URL', async () => {
+    const url = 'other_url'
+    const { sut, httpPostClientSpy } = makeSut(url)
+    await sut.auth()
 
-    expect(httpPostClientSpy.url).toBe(url);
-  });
-});
+    expect(httpPostClientSpy.url).toBe(url)
+  })
+})
