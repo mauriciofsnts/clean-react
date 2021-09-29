@@ -1,6 +1,6 @@
 import { AccountModel } from 'domain/models/accountModel'
 
-interface AuthenticationParams {
+export interface AuthenticationParams {
   email: string
   password: string
 }
