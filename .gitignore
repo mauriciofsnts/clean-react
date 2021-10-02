@@ -2,5 +2,6 @@ node_modules
 .vscode
 coverage
 dist
+public/js
 
 yarn-error.log
