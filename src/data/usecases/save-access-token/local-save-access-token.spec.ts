@@ -1,29 +1,29 @@
 import faker from 'faker'
-import { SetStorageSpy } from '@/data/test/mock-storage'
+import { SetStorageMock } from '@/data/test/mock-storage'
 import { LocalSaveAccessToken } from './local-save-access-token'
 
 interface SutTypes {
   sut: LocalSaveAccessToken
-  setStorageSpy: SetStorageSpy
+  setStorageMock: SetStorageMock
 }
 
 const makeSut = (): SutTypes => {
-  const setStorageSpy = new SetStorageSpy()
-  const sut = new LocalSaveAccessToken(setStorageSpy)
+  const setStorageMock = new SetStorageMock()
+  const sut = new LocalSaveAccessToken(setStorageMock)
 
   return {
     sut,
-    setStorageSpy
+    setStorageMock
   }
 }
 
 describe('LocalSaveAccessToken', () => {
   test('should call SetStorage with correct value', async () => {
-    const { sut, setStorageSpy } = makeSut()
+    const { sut, setStorageMock } = makeSut()
     const access_token = faker.datatype.uuid()
     await sut.save(access_token)
 
-    expect(setStorageSpy.key).toBe('access_token')
-    expect(setStorageSpy.value).toBe(access_token)
+    expect(setStorageMock.key).toBe('access_token')
+    expect(setStorageMock.value).toBe(access_token)
   })
 })
