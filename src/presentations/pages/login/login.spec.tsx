@@ -10,13 +10,17 @@ import {
   cleanup,
   waitFor
 } from '@testing-library/react'
-import 'jest-localstorage-mock'
-import { ValidationSpy, AuthenticationSpy } from '@/presentations/test/'
+import {
+  ValidationSpy,
+  AuthenticationSpy,
+  SaveAccessTokenMock
+} from '@/presentations/test/'
 import { InvalidCredentialsError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RenderResult
   authenticationSpy: AuthenticationSpy
+  saveAccessTokenMock: SaveAccessTokenMock
 };
 
 type SutParams = {
@@ -27,18 +31,24 @@ const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationSpy()
   const authenticationSpy = new AuthenticationSpy()
+  const saveAccessTokenMock = new SaveAccessTokenMock()
 
   validationSpy.errorMessage = params?.validationError
 
   const sut = render(
     <Router history={history}>
-      <Login validation={validationSpy} authentication={authenticationSpy} />
+      <Login
+        validation={validationSpy}
+        authentication={authenticationSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
     </Router>
   )
 
   return {
     sut,
-    authenticationSpy
+    authenticationSpy,
+    saveAccessTokenMock
   }
 }
 
@@ -93,19 +103,26 @@ const testElementExists = (sut: RenderResult, fieldName: string): void => {
   expect(el).toBeTruthy()
 }
 
-const testElementText = (sut: RenderResult, fieldName: string, text: string): void => {
+const testElementText = (
+  sut: RenderResult,
+  fieldName: string,
+  text: string
+): void => {
   const el = sut.getByTestId(fieldName)
   expect(el.textContent).toBe(text)
 }
 
-const testButtonIsDisabled = (sut: RenderResult, fieldName: string, isDisabled: boolean): void => {
+const testButtonIsDisabled = (
+  sut: RenderResult,
+  fieldName: string,
+  isDisabled: boolean
+): void => {
   const submitButton = sut.getByTestId(fieldName) as HTMLButtonElement
   expect(submitButton.disabled).toBe(isDisabled)
 }
 
 describe('Login component', () => {
   afterEach(cleanup)
-  beforeEach(() => localStorage.clear())
 
   test('should start with initial state', () => {
     const validationError = faker.random.words()
@@ -191,7 +208,9 @@ describe('Login component', () => {
   test('should present error if Authenticatoin fails', async () => {
     const { sut, authenticationSpy } = makeSut()
     const error = new InvalidCredentialsError()
-    jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
+    jest
+      .spyOn(authenticationSpy, 'auth')
+      .mockReturnValueOnce(Promise.reject(error))
 
     await simulateValidSubmit(sut)
 
@@ -199,12 +218,14 @@ describe('Login component', () => {
     testErrorWrapChildCount(sut, 1)
   })
 
-  test('should add accessToken to localstorage on success', async () => {
-    const { sut, authenticationSpy } = makeSut()
+  test('should call SaveAccessToken on success', async () => {
+    const { sut, authenticationSpy, saveAccessTokenMock } = makeSut()
 
     await simulateValidSubmit(sut)
 
-    expect(localStorage.setItem).toHaveBeenCalledWith('access_token', authenticationSpy.account.accessToken)
+    expect(saveAccessTokenMock.accessToken).toBe(
+      authenticationSpy.account.accessToken
+    )
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })
