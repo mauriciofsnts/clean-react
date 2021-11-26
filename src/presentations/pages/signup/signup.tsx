@@ -11,7 +11,7 @@ import Styles from './signup-styles.scss'
 
 type Props = {
   validation: Validation
-}
+};
 
 const Signup: React.FC<Props> = ({ validation }) => {
   const [state, setState] = useState({
@@ -20,7 +20,8 @@ const Signup: React.FC<Props> = ({ validation }) => {
     nameError: '',
     email: '',
     emailError: '',
-    passwordError: 'Campo obrigatório',
+    password: '',
+    passwordError: '',
     passwordConfirmationError: 'Campo obrigatório',
     errorMessage: '',
     mainError: ''
@@ -30,9 +31,10 @@ const Signup: React.FC<Props> = ({ validation }) => {
     setState((prev) => ({
       ...prev,
       nameError: validation.validate('name', state.name),
-      emailError: validation.validate('email', state.email)
+      emailError: validation.validate('email', state.email),
+      passwordError: validation.validate('email', state.password)
     }))
-  }, [state.name])
+  }, [state.name, state.email, state.password])
 
   return (
     <div className={Styles.signup}>
