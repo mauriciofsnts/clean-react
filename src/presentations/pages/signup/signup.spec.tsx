@@ -1,9 +1,6 @@
 import { Signup } from '@/presentations/pages'
 import { Helper, ValidationSpy } from '@/presentations/test'
-import {
-  cleanup, render,
-  RenderResult
-} from '@testing-library/react'
+import { cleanup, render, RenderResult } from '@testing-library/react'
 import faker from 'faker'
 import React from 'react'
 
@@ -69,7 +66,34 @@ describe('Signup component', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError })
 
+    Helper.populateField(sut, 'passwordConfirmation')
+    Helper.testStatusForField(sut, 'passwordConfirmation', validationError)
+  })
+
+  test('should show valid name state if validation succeeds', () => {
+    const { sut } = makeSut()
+
+    Helper.populateField(sut, 'name')
+    Helper.testStatusForField(sut, 'name')
+  })
+  test('should show valid email state if validation succeeds', () => {
+    const { sut } = makeSut()
+
+    Helper.populateField(sut, 'email')
+    Helper.testStatusForField(sut, 'email')
+  })
+
+  test('should show valid password state if validation succeeds', () => {
+    const { sut } = makeSut()
+
     Helper.populateField(sut, 'password')
-    Helper.testStatusForField(sut, 'password', validationError)
+    Helper.testStatusForField(sut, 'password')
+  })
+
+  test('should show valid passwordConfirmation state if validation succeeds', () => {
+    const { sut } = makeSut()
+
+    Helper.populateField(sut, 'passwordConfirmation')
+    Helper.testStatusForField(sut, 'passwordConfirmation')
   })
 })
