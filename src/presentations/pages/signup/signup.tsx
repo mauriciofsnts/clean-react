@@ -38,12 +38,25 @@ const Signup: React.FC<Props> = ({ validation }) => {
     }))
   }, [state.name, state.email, state.password, state.passwordConfirmation])
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+
+    setState((prev) => ({
+      ...prev,
+      isLoading: true
+    }))
+  }
+
   return (
     <div className={Styles.signup}>
       <LoginHeader />
 
       <FormContext.Provider value={{ state, setState }}>
-        <form className={Styles.form}>
+        <form
+          className={Styles.form}
+          data-testid="form"
+          onSubmit={handleSubmit}
+        >
           <h2>Criar conta</h2>
 
           <Input type="text" name="name" placeholder="Digite seu nome" />
@@ -61,7 +74,12 @@ const Signup: React.FC<Props> = ({ validation }) => {
           />
 
           <button
-            disabled={!!state.emailError || !!state.passwordError || !!state.nameError || !!state.passwordConfirmationError}
+            disabled={
+              !!state.emailError ||
+              !!state.passwordError ||
+              !!state.nameError ||
+              !!state.passwordConfirmationError
+            }
             data-testid="submit"
             className={Styles.submit}
             type="submit"
