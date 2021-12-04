@@ -25,11 +25,19 @@ button {
     opacity: 0.9;
     transition: 1s;
   }
+
+  &:disabled {
+    background-color: $disabledColor;
+    color: $disabledBackground;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
-
-input[type="password"], 
-input[type="text"], 
+input[type="password"],
+input[type="text"],
 input[type="email"] {
   border: 1px solid $primaryLight;
   line-height: 40px;

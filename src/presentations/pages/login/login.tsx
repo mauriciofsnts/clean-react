@@ -6,7 +6,8 @@ import {
   Footer,
   FormStatus,
   Input,
-  LoginHeader
+  LoginHeader,
+  SubmitButton
 } from '@/presentations/components'
 
 import { FormContext } from '@/presentations/contexts'
@@ -19,10 +20,15 @@ type Props = {
   saveAccessToken: SaveAccessToken
 };
 
-const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }) => {
+const Login: React.FC<Props> = ({
+  validation,
+  authentication,
+  saveAccessToken
+}) => {
   const history = useHistory()
   const [state, setState] = useState({
     isLoading: false,
+    isFormInvalid: false,
     errorMessage: '',
     email: '',
     emailError: 'Campo obrigatório',
@@ -45,13 +51,25 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken })
     }))
   }, [state.password])
 
+  useEffect(() => {
+    const emailError = validation.validate('email', state.email)
+    const passwordError = validation.validate('password', state.password)
+
+    setState((prev) => ({
+      ...prev,
+      emailError,
+      passwordError,
+      isFormInvalid: !!emailError || !!passwordError
+    }))
+  }, [state.password, state.email])
+
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault()
 
     try {
-      if (state.isLoading || state.emailError || state.passwordError) return
+      if (state.isLoading || state.isFormInvalid) return
 
       setState((prev) => ({ ...prev, isLoading: true }))
       const account = await authentication.auth({
@@ -91,14 +109,8 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken })
             placeholder="Digite sua senha"
           />
 
-          <button
-            disabled={!!state.emailError || !!state.passwordError}
-            data-testid="submit"
-            className={Styles.submit}
-            type="submit"
-          >
-            Entrar
-          </button>
+          <SubmitButton text="Entrar" />
+
           <Link data-testid="signup" to="/signup" className={Styles.link}>
             Criar conta
           </Link>
