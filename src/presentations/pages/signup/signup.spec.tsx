@@ -1,6 +1,11 @@
+import React from 'react'
 import { InvalidCredentialsError } from '@/domain/errors'
 import { Signup } from '@/presentations/pages'
-import { Helper, ValidationSpy } from '@/presentations/test'
+import {
+  Helper,
+  SaveAccessTokenMock,
+  ValidationSpy
+} from '@/presentations/test'
 import { AddAccountSpy } from '@/presentations/test/mock-add-account'
 import {
   cleanup,
@@ -10,30 +15,42 @@ import {
   RenderResult
 } from '@testing-library/react'
 import faker from 'faker'
-import React from 'react'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
 
 type SutTypes = {
   sut: RenderResult
   addAccountSpy: AddAccountSpy
+  saveAccessTokenMock: SaveAccessTokenMock
 };
 
 type SutParams = {
   validationError: string
 };
 
+const history = createMemoryHistory({ initialEntries: ['/login'] })
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationSpy()
+  const saveAccessTokenMock = new SaveAccessTokenMock()
   validationSpy.errorMessage = params?.validationError
 
   const addAccountSpy = new AddAccountSpy()
 
   const sut = render(
-    <Signup validation={validationSpy} addAccount={addAccountSpy} />
+    <Router history={history}>
+      <Signup
+        validation={validationSpy}
+        addAccount={addAccountSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
+    </Router>
   )
 
   return {
     sut,
-    addAccountSpy
+    addAccountSpy,
+    saveAccessTokenMock
   }
 }
 
@@ -185,5 +202,17 @@ describe('Signup component', () => {
     await simulateValidSubmit(sut)
     Helper.testElementText(sut, 'main-error', error.message)
     Helper.testChildCount(sut, 'error-wrap', 1)
+  })
+
+  test('should call SaveAccessToken on success', async () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut()
+
+    await simulateValidSubmit(sut)
+
+    expect(saveAccessTokenMock.accessToken).toBe(
+      addAccountSpy.account.accessToken
+    )
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
   })
 })
