@@ -8,7 +8,7 @@ import {
 import { FormContext } from '@/presentations/contexts'
 import { Validation } from '@/presentations/protocols/validation'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Styles from './signup-styles.scss'
 
 type Props = {
@@ -17,7 +17,11 @@ type Props = {
   saveAccessToken: SaveAccessToken
 };
 
-const Signup: React.FC<Props> = ({ validation, addAccount, saveAccessToken }) => {
+const Signup: React.FC<Props> = ({
+  validation,
+  addAccount,
+  saveAccessToken
+}) => {
   const history = useHistory()
   const [state, setState] = useState({
     isLoading: false,
@@ -125,7 +129,10 @@ const Signup: React.FC<Props> = ({ validation, addAccount, saveAccessToken }) =>
           >
             Entrar
           </button>
-          <span className={Styles.link}>Voltar para login</span>
+
+          <Link data-testid="login" to="/login" className={Styles.link} replace>
+            Voltar para login
+          </Link>
 
           <FormStatus />
         </form>
