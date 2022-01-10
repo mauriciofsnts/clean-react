@@ -3,5 +3,8 @@
     "types": ["cypress"],
     "esModuleInterop": true
   },
-  "include": ["../node_modules/cypress", "./*/*.ts", "integration/login.spec.tsx"]
+  "include": [
+    "../../../../node_modules/cypress",
+    "./*/*.ts"
+  ]
 }
