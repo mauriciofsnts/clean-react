@@ -16,7 +16,7 @@ type Props = {
   validation: Validation
   addAccount: AddAccount
   saveAccessToken: SaveAccessToken
-};
+}
 
 const Signup: React.FC<Props> = ({
   validation,
@@ -28,65 +28,61 @@ const Signup: React.FC<Props> = ({
     isLoading: false,
     isFormInvalid: true,
     name: '',
-    nameError: '',
     email: '',
-    emailError: '',
     password: '',
-    passwordError: '',
     passwordConfirmation: '',
+    nameError: '',
+    emailError: '',
+    passwordError: '',
     passwordConfirmationError: '',
-    errorMessage: '',
     mainError: ''
   })
 
   useEffect(() => {
     const { name, email, password, passwordConfirmation } = state
     const formData = { name, email, password, passwordConfirmation }
-
     const nameError = validation.validate('name', formData)
     const emailError = validation.validate('email', formData)
     const passwordError = validation.validate('password', formData)
     const passwordConfirmationError = validation.validate('passwordConfirmation', formData)
 
-    setState((prev) => ({
-      ...prev,
+    setState({
+      ...state,
       nameError,
       emailError,
       passwordError,
       passwordConfirmationError,
-      isFormInvalid: !!nameError || !!emailError || !!passwordError || !!passwordConfirmationError
-    }))
+      isFormInvalid:
+        !!nameError ||
+        !!emailError ||
+        !!passwordError ||
+        !!passwordConfirmationError
+    })
   }, [state.name, state.email, state.password, state.passwordConfirmation])
 
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
-    e.preventDefault()
-
+    event.preventDefault()
     try {
-      if (state.isFormInvalid || state.isLoading) return
-
-      setState((prev) => ({
-        ...prev,
-        isLoading: true
-      }))
-
+      if (state.isLoading || state.isFormInvalid) {
+        return
+      }
+      setState({ ...state, isLoading: true })
       const account = await addAccount.add({
         name: state.name,
         email: state.email,
         password: state.password,
         passwordConfirmation: state.passwordConfirmation
       })
-
       await saveAccessToken.save(account.accessToken)
-
       history.replace('/')
     } catch (error) {
-      setState((prev) => ({
-        ...prev,
+      setState({
+        ...state,
         isLoading: false,
         mainError: error.message
-      }))
+      })
     }
   }
 
@@ -116,7 +112,7 @@ const Signup: React.FC<Props> = ({
             placeholder="Repita sua senha"
           />
 
-          <SubmitButton text="Cadastrar"/>
+          <SubmitButton text="Cadastrar" />
 
           <Link data-testid="login" to="/login" className={Styles.link} replace>
             Voltar para login

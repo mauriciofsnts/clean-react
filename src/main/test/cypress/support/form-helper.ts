@@ -23,7 +23,6 @@ export const testHttpCallsCount = (count: number): void => {
 export const testUrl = (path: string): void => {
   const url = Cypress.config().baseUrl
   const route = `${url}${path}`
-  console.log('route: ', route)
   cy.url().should('eq', route)
 }
 

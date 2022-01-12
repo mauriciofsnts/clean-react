@@ -1,5 +1,5 @@
-import { InvalidFieldError } from '@/validation/errors'
 import { FieldValidation } from '@/validation/protocols/field-validation'
+import { InvalidFieldError } from '@/validation/errors'
 
 export class CompareFieldsValidation implements FieldValidation {
   constructor (
@@ -8,6 +8,6 @@ export class CompareFieldsValidation implements FieldValidation {
   ) {}
 
   validate (input: object): Error {
-    return input[this.field] !== this.fieldToCompare ? new InvalidFieldError() : null
+    return input[this.field] !== input[this.fieldToCompare] ? new InvalidFieldError() : null
   }
 }
