@@ -43,7 +43,9 @@ describe('Signup', () => {
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(3))
     FormHelper.testInputStatus('password', 'Valor inválido')
 
-    cy.getByTestId('passwordConfirmation').focus().type(faker.random.alphaNumeric(4))
+    cy.getByTestId('passwordConfirmation')
+      .focus()
+      .type(faker.random.alphaNumeric(4))
     FormHelper.testInputStatus('passwordConfirmation', 'Valor inválido')
 
     cy.getByTestId('submit').should('have.attr', 'disabled')
@@ -72,6 +74,16 @@ describe('Signup', () => {
     Http.mockEmailInUseError()
     simulateValidSubmit()
     FormHelper.testMainError('Esse e-mail já está em uso')
+
+    FormHelper.testUrl('signup')
+  })
+
+  it('should present UnexpectedError on 400', () => {
+    Http.mockUnexpectedError()
+    simulateValidSubmit()
+    FormHelper.testMainError(
+      'Algo de errado aconteceu. Tente novamente em breve.'
+    )
 
     FormHelper.testUrl('signup')
   })
