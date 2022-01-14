@@ -7,10 +7,7 @@ import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http'
 export class RemoteAuthentication implements Authentication {
   constructor (
     private readonly url: string,
-    private readonly httpPostClient: HttpPostClient<
-    AuthenticationParams,
-    AccountModel
-    >
+    private readonly httpPostClient: HttpPostClient<AccountModel>
   ) {}
 
   async auth (params: AuthenticationParams): Promise<AccountModel> {
