@@ -1,4 +1,4 @@
-type answer = {
+export type AnswerModel = {
   image?: string
   answer: string
 }
@@ -6,7 +6,7 @@ type answer = {
 export type SurveyModel = {
   id: string
   question: string
-  answer: answer[]
+  answer: AnswerModel[]
   date: Date
   didAnswer: boolean
 }
