@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import Styles from './header-styles.scss'
+import Styles from './header.styles.scss'
 import { Logo } from '@/presentations/components'
 
 const Header: React.FC = () => {
