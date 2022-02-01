@@ -100,6 +100,24 @@
             linear-gradient(to right, rgba($white, 1), rgba($white, 1));
           background-position: 0 0, 54 0;
           background-size: 50px 100%, 100% 100%;
+          position: relative;
+
+          .iconWrap {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            padding: 10px;
+            border-radius: 100%;
+            display: flex;
+
+            &.red {
+              background-color: $invalid;
+            }
+
+            &.green {
+              background-color: $valid;
+            }
+          }
 
           time {
             display: flex;
