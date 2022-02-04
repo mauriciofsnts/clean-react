@@ -1,8 +1,8 @@
 import React from 'react'
 import { Signup } from '@/presentations/pages'
-import { makeLocalSaveAccessToken } from '@/main/factories/usecases/save-access-token/local-save-access-token-factory'
 import { makeSignupValidation } from './signup-validation-factory'
 import { makeRemoteAddAccount } from '../../usecases/add-account/add-account-factory'
+import { makeLocalUpdateCurrentAccount } from '../../usecases/update-current-account/local-update-current-account-factory'
 
 export const makeSignup: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ export const makeSignup: React.FC = () => {
       <Signup
         addAccount={makeRemoteAddAccount()}
         validation={makeSignupValidation()}
-        saveAccessToken={makeLocalSaveAccessToken()}
+        updateCurrentAccount={makeLocalUpdateCurrentAccount()}
       />
     </React.Fragment>
   )

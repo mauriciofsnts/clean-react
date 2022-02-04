@@ -108,7 +108,7 @@ describe('Signup', () => {
     cy.getByTestId('error-wrap').should('not.have.descendants')
 
     FormHelper.testUrl('')
-    FormHelper.testLocalStorageItem('access_token')
+    FormHelper.testLocalStorageItem('account')
   })
 
   it('should prevent multiple submits', () => {
