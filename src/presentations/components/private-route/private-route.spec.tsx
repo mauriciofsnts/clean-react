@@ -1,18 +1,29 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import PrivateRouter from './private-route'
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory, MemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
-describe('PrivateRoute', () => {
-  test('should redirect to /login if token is empty', () => {
-    const history = createMemoryHistory({ initialEntries: ['/'] })
+type SutTypes = {
+  history: MemoryHistory
+}
 
-    render(
-      <Router history={history}>
-        <PrivateRouter />
-      </Router>
-    )
+const makeSut = (): SutTypes => {
+  const history = createMemoryHistory({ initialEntries: ['/'] })
+
+  render(
+    <Router history={history}>
+      <PrivateRouter />
+    </Router>
+  )
+
+  return { history }
+}
+
+describe('PrivateRoute', () => {
+  const { history } = makeSut()
+
+  test('should redirect to /login if token is empty', () => {
     expect(history.location.pathname).toBe('/login')
   })
 })
