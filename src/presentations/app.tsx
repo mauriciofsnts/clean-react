@@ -5,12 +5,18 @@ import '@/presentations/styles/global.scss'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import ApiContext from './contexts/api/api-context'
 import { SurveyList } from './pages'
-import { setCurrentAccountAdapter } from '@/main/adapters/current-account-adapter'
+import {
+  getCurrentAccountAdapter,
+  setCurrentAccountAdapter
+} from '@/main/adapters/current-account-adapter'
 
 const App: React.FC = () => {
   return (
     <ApiContext.Provider
-      value={{ setCurrentAccount: setCurrentAccountAdapter }}
+      value={{
+        setCurrentAccount: setCurrentAccountAdapter,
+        getCurrentAccount: getCurrentAccountAdapter
+      }}
     >
       <BrowserRouter>
         <Switch>
