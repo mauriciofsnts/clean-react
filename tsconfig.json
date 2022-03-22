@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "types": ["node", "jest", "@testing-library/jest-dom"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "esModuleInterop": true,
     "module": "esnext",
