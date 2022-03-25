@@ -1,29 +1,41 @@
 import React from 'react'
-import { Icon } from '@/presentations/components'
-import { IconName } from '@/presentations/components/icon/icon'
-import Styles from './survey-item-styles.scss'
+import Styles from './item-styles.scss'
+import { IconName, Icon } from '@/presentations/components'
+import { Link } from 'react-router-dom'
+import { SurveyModel } from '@/domain/models'
 
-type Props = {}
+type Props = {
+  survey: SurveyModel
+}
 
-const SurveyList: React.FC<Props> = (props) => {
+const SurveyItem: React.FC<Props> = ({ survey }: Props) => {
+  const iconName = survey.didAnswer ? IconName.thumbUp : IconName.thumbDown
   return (
-    <div className={Styles.surveyListWrapper}>
-      <li>
-        <div className={Styles.surveyContent}>
-          <Icon className={Styles.iconWrap} iconName={IconName.thumbUp} />
-          <time>
-            <span className={Styles.day}>22</span>
-            <span className={Styles.month}>04</span>
-            <span className={Styles.year}>2020</span>
-          </time>
-
-          <p>Qual é seu framework web favorito?</p>
-        </div>
-
-        <footer>Ver resultado</footer>
-      </li>
-    </div>
+    <li className={Styles.surveyItemWrap}>
+      <div className={Styles.surveyContent}>
+        <Icon className={Styles.iconWrap} iconName={iconName} />
+        <time>
+          <span data-testid="day" className={Styles.day}>
+            {survey.date.getDate().toString().padStart(2, '0')}
+          </span>
+          <span data-testid="month" className={Styles.month}>
+            {survey.date
+              .toLocaleString('pt-BR', { month: 'short' })
+              .replace('.', '')}
+          </span>
+          <span data-testid="year" className={Styles.year}>
+            {survey.date.getFullYear()}
+          </span>
+        </time>
+        <p data-testid="question">{survey.question}</p>
+      </div>
+      <footer>
+        <Link data-testid="link" to={`/surveys/${survey.id}`}>
+          Ver Resultado
+        </Link>
+      </footer>
+    </li>
   )
 }
 
-export default SurveyList
+export default SurveyItem
