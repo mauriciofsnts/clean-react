@@ -17,5 +17,6 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/src/main/test/cypress'
-  ]
+  ],
+  setupFilesAfterEnv: ['<rootDir>/src/setuptests.ts']
 }
