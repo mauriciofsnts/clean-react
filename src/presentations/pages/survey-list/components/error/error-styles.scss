@@ -1,2 +1,18 @@
+@import '../../../../styles/color.scss';
+
 .erroWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $white;
+  padding: 40px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0px 1px 3 -1px $black;
+
+  span {
+    font-size: 20px;
+    margin-bottom: 24px;
+    font-weight: bold;
+  }
 }
