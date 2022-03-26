@@ -8,7 +8,7 @@ import {
 } from '@/main/adapters/current-account-adapter'
 import { makeLogin } from '@/main/factories/pages/login/login-factory'
 import { makeSignup } from '@/main/factories/pages/signup/signup-factory'
-import { SurveyList } from './pages'
+import { makeSurveyList } from '@/main/factories/pages/survey-list/survey-list-factory'
 import { PrivateRoute } from './components'
 
 const App: React.FC = () => {
@@ -23,7 +23,7 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/login" exact component={makeLogin} />
           <Route path="/signup" exact component={makeSignup} />
-          <PrivateRoute path="/" exact component={SurveyList} />
+          <PrivateRoute path="/" exact component={makeSurveyList} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>
