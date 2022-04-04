@@ -1,5 +1,6 @@
 import { HttpGetParams } from '@/data/protocols/http'
 import { GetStorageSpy, HttpGetClientSpy, mockGetRequest } from '@/data/test'
+import { mockAccountModel } from '@/domain/test'
 import { AuthorizeHttpGetClientDecorator } from '@/main/decorators'
 import faker from 'faker'
 
@@ -12,7 +13,10 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const getStorageSpy = new GetStorageSpy()
   const httpGetClientSpy = new HttpGetClientSpy()
-  const sut = new AuthorizeHttpGetClientDecorator(getStorageSpy, httpGetClientSpy)
+  const sut = new AuthorizeHttpGetClientDecorator(
+    getStorageSpy,
+    httpGetClientSpy
+  )
   return {
     sut,
     getStorageSpy,
@@ -41,5 +45,25 @@ describe('AuthorizeHttpGetClientDecorator', () => {
     await sut.get(httpRequest)
     expect(httpGetClientSpy.url).toBe(httpRequest.url)
     expect(httpGetClientSpy.headers).toEqual(httpRequest.headers)
+  })
+
+  test('should add headers if GetStorage is valid', async () => {
+    const { sut, getStorageSpy, httpGetClientSpy } = makeSut()
+
+    getStorageSpy.value = mockAccountModel()
+
+    const httpRequest: HttpGetParams = {
+      url: faker.internet.url(),
+      headers: {
+        field: faker.random.word()
+      }
+    }
+
+    await sut.get(httpRequest)
+    expect(httpGetClientSpy.url).toBe(httpRequest.url)
+    expect(httpGetClientSpy.headers).toEqual({
+      ...httpRequest.headers,
+      'x-access-token': getStorageSpy.value.accessToken
+    })
   })
 })
