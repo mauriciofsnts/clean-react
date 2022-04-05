@@ -6,13 +6,13 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 import faker from 'faker'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
-import { AccountModel } from '@/domain/models'
 import { ApiContext } from '@/presentations/contexts'
 import Signup from './signup'
+import { AddAccount } from '@/domain/usecases'
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy
-  setCurrentAccountMock: (account: AccountModel) => void
+  setCurrentAccountMock: (account: AddAccount.Model) => void
 }
 
 type SutParams = {

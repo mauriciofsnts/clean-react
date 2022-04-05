@@ -2,10 +2,10 @@ import React from 'react'
 import Styles from './item-styles.scss'
 import { IconName, Icon } from '@/presentations/components'
 import { Link } from 'react-router-dom'
-import { SurveyModel } from '@/domain/models'
+import { LoadSurveyList } from '@/domain/usecases'
 
 type Props = {
-  survey: SurveyModel
+  survey: LoadSurveyList.Model
 }
 
 const SurveyItem: React.FC<Props> = ({ survey }: Props) => {

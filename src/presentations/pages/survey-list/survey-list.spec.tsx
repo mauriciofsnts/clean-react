@@ -2,7 +2,6 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { SurveyList } from '@/presentations/pages'
 import { LoadSurveyList } from '@/domain/usecases'
-import { SurveyModel } from '@/domain/models'
 import { mockSurveyListModel } from '@/domain/test'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory, MemoryHistory } from 'history'
@@ -13,7 +12,7 @@ class LoadSurveyListSpy implements LoadSurveyList {
   surveys = mockSurveyListModel()
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  async loadAll (): Promise<SurveyModel[]> {
+  async loadAll (): Promise<LoadSurveyList.Model[]> {
     this.callsCount++
     return this.surveys
   }
