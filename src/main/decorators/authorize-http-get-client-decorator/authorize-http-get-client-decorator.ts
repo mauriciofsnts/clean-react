@@ -4,12 +4,11 @@ import {
   HttpGetParams,
   HttpResponse
 } from '@/data/protocols/http'
-import { HttpGetClientSpy } from '@/data/test'
 
 export class AuthorizeHttpGetClientDecorator implements HttpGetClient {
   constructor (
     private readonly getStorage: GetStorage,
-    private readonly httpGetClient: HttpGetClientSpy
+    private readonly httpGetClient: HttpGetClient
   ) {}
 
   async get (params: HttpGetParams): Promise<HttpResponse> {
