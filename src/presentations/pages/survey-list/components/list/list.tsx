@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Styles from './survey-list.scss'
+import Styles from './list-styles.scss'
 
 import {
   Context,
