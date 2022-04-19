@@ -1,17 +1,19 @@
-import faker from 'faker'
-import * as Http from '../support/survey-list-mocks'
-import * as FormHelper from '../support/form-helper'
+import * as Http from '../utils/http-mocks'
+import * as FormHelper from '../utils/form-helper'
+
+const path = /surveys/
+export const mockUnexpectedError = (): void => Http.mockServerError(path, 'GET')
+export const mockAccessDeniedError = (): void => Http.mockForbiddenError(path, 'GET')
 
 describe('SurveyList', () => {
   beforeEach(() => {
-    FormHelper.setLocalStorageItem('account', {
-      accessToken: faker.random.uuid(),
-      name: faker.name.findName()
+    cy.fixture('account').then(account => {
+      FormHelper.setLocalStorageItem('account', account)
     })
   })
 
   it('should present error on UnexpectedError', () => {
-    Http.mockUnexpectedError()
+    mockUnexpectedError()
     cy.visit('')
 
     cy.getByTestId('error').should(
@@ -21,14 +23,14 @@ describe('SurveyList', () => {
   })
 
   it('should logout on AccessDeniedError', () => {
-    Http.mockAccessDeniedError()
+    mockAccessDeniedError()
     cy.visit('')
 
     FormHelper.testUrl('login')
   })
 
-  it('should presenet correct username', () => {
-    Http.mockUnexpectedError()
+  it('should present correct username', () => {
+    mockUnexpectedError()
     cy.visit('')
 
     const { name } = FormHelper.getLocalStorageItem('account')
@@ -36,7 +38,7 @@ describe('SurveyList', () => {
   })
 
   it('should logout on logout link click', () => {
-    Http.mockUnexpectedError()
+    mockUnexpectedError()
     cy.visit('')
 
     cy.getByTestId('logout').click()
