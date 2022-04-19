@@ -26,4 +26,12 @@ describe('SurveyList', () => {
 
     FormHelper.testUrl('login')
   })
+
+  it('should presenet correct username', () => {
+    Http.mockUnexpectedError()
+    cy.visit('')
+
+    const { name } = FormHelper.getLocalStorageItem('account')
+    cy.getByTestId('username').should('contain.text', name)
+  })
 })
