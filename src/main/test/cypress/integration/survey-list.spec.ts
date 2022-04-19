@@ -32,6 +32,20 @@ describe('SurveyList', () => {
     FormHelper.testUrl('login')
   })
 
+  it('should reload on button click', () => {
+    mockUnexpectedError()
+    cy.visit('')
+
+    mockSuccess()
+    cy.getByTestId('error').should(
+      'contain.text',
+      'Algo de errado aconteceu. Tente novamente em breve.'
+    )
+
+    cy.getByTestId('reload').click()
+    cy.get('li:not(:empty)').should('have.length', 2)
+  })
+
   it('should present correct username', () => {
     mockUnexpectedError()
     cy.visit('')
