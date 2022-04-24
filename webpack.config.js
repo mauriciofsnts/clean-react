@@ -1,6 +1,7 @@
 const path = require('path')
 const { DefinePlugin } = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const FaviconWebpackPlugin = require('favicons-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -53,6 +54,9 @@ module.exports = {
     new CleanWebpackPlugin(),
     new DefinePlugin({
       'process.env.API_URL': JSON.stringify('http://fordevs.herokuapp.com/api')
+    }),
+    new FaviconWebpackPlugin({
+      logo: './public/favicon.png'
     })
   ]
 }
