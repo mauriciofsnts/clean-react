@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import FlipMove from 'react-flip-move'
-import { Footer, Header, Spinner } from '@/presentations/components'
+import { Footer, Header, Loading } from '@/presentations/components'
 import Styles from './survey-result-styles.scss'
 
 type Props = {}
@@ -46,12 +46,7 @@ const SurveyResult: React.FC<Props> = () => {
 
         <button>Voltar</button>
 
-        <div className={Styles.loadingWrap}>
-          <div className={Styles.loading}>
-            <span>Aguarde...</span>
-            <Spinner isNegative/>
-          </div>
-        </div>
+        <Loading />
       </div>
 
       <Footer />
