@@ -10,12 +10,14 @@ export const mockRemoteSurveyResultModel =
         image: faker.internet.url(),
         answer: faker.random.words(10),
         count: faker.datatype.number(),
-        percent: faker.datatype.number(100)
+        percent: faker.datatype.number(100),
+        isCurrentAccountAnswer: faker.random.boolean()
       },
       {
         answer: faker.random.words(10),
         count: faker.datatype.number(),
-        percent: faker.datatype.number(100)
+        percent: faker.datatype.number(100),
+        isCurrentAccountAnswer: faker.random.boolean()
       }
     ]
   })
