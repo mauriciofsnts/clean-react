@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import FlipMove from 'react-flip-move'
-import { Footer, Header, Loading } from '@/presentations/components'
+import { Calendar, Footer, Header, Loading } from '@/presentations/components'
 import Styles from './survey-result-styles.scss'
 
 type Props = {}
@@ -32,7 +32,10 @@ const SurveyResult: React.FC<Props> = () => {
       <Header />
 
       <div className={Styles.contentWrap}>
-        <h2>Qual é seu framework web favorito?</h2>
+        <hgroup>
+          <Calendar date={new Date()} className={Styles.calendarWrap} />
+          <h2>Qual é seu framework web favorito?</h2>
+        </hgroup>
 
         <FlipMove className={Styles.answersList}>
           {anwsers.map((a) => (
