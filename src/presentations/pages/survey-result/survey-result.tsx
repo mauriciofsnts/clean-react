@@ -32,22 +32,26 @@ const SurveyResult: React.FC<Props> = () => {
       <Header />
 
       <div className={Styles.contentWrap}>
-        <hgroup>
-          <Calendar date={new Date()} className={Styles.calendarWrap} />
-          <h2>Qual é seu framework web favorito?</h2>
-        </hgroup>
+        {false && (
+          <>
+            <hgroup>
+              <Calendar date={new Date()} className={Styles.calendarWrap} />
+              <h2>Qual é seu framework web favorito?</h2>
+            </hgroup>
 
-        <FlipMove className={Styles.answersList}>
-          {anwsers.map((a) => (
-            <li key={a.anwser}>
-              <img src={a.image} />
-              <span className={Styles.answer}>{a.anwser}</span>
-              <span className={Styles.percent}>{a.percent}%</span>
-            </li>
-          ))}
-        </FlipMove>
+            <FlipMove className={Styles.answersList}>
+              {anwsers.map((a) => (
+                <li key={a.anwser}>
+                  <img src={a.image} />
+                  <span className={Styles.answer}>{a.anwser}</span>
+                  <span className={Styles.percent}>{a.percent}%</span>
+                </li>
+              ))}
+            </FlipMove>
 
-        <button>Voltar</button>
+            <button>Voltar</button>
+          </>
+        )}
 
         <Loading />
       </div>
