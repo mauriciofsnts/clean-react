@@ -6,7 +6,7 @@ type Props = {}
 
 const Loading: React.FC<Props> = () => {
   return (
-    <div className={Styles.loadingWrap}>
+    <div className={Styles.loadingWrap} data-testid="loading">
       <div className={Styles.loading}>
         <span>Aguarde...</span>
         <Spinner isNegative />

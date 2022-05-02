@@ -1,37 +1,29 @@
 import React, { useState } from 'react'
-import FlipMove from 'react-flip-move'
-import { Calendar, Footer, Header, Loading } from '@/presentations/components'
 import Styles from './survey-result-styles.scss'
+import FlipMove from 'react-flip-move'
+import {
+  Calendar,
+  Error,
+  Footer,
+  Header,
+  Loading
+} from '@/presentations/components'
+import { LoadSurveyResult } from '@/domain/usecases'
 
 type Props = {}
 
 const SurveyResult: React.FC<Props> = () => {
-  const [anwsers] = useState([
-    {
-      image: 'http://fordevs.herokuapp.com/static/img/logo-react.png',
-      anwser: 'ReactJS',
-      percent: 50,
-      isCurrentAccountAnswer: true
-    },
-    {
-      image: 'http://fordevs.herokuapp.com/static/img/logo-vue.png',
-      anwser: 'VueJS',
-      percent: 30,
-      isCurrentAccountAnswer: false
-    },
-    {
-      image: 'http://fordevs.herokuapp.com/static/img/logo-angular.png',
-      anwser: 'Angular',
-      percent: 20,
-      isCurrentAccountAnswer: false
-    }
-  ])
+  const [state, setState] = useState({
+    isLoading: false,
+    error: '',
+    surveyResult: null as LoadSurveyResult.Model[]
+  })
 
   return (
     <div className={Styles.surveyResultWrap}>
       <Header />
 
-      <div className={Styles.contentWrap}>
+      <div data-testid="survey-result" className={Styles.contentWrap}>
         {false && (
           <>
             <hgroup>
@@ -40,11 +32,11 @@ const SurveyResult: React.FC<Props> = () => {
             </hgroup>
 
             <FlipMove className={Styles.answersList}>
-              {anwsers.map((a) => (
-                <li key={a.anwser}>
-                  <img src={a.image} />
-                  <span className={Styles.answer}>{a.anwser}</span>
-                  <span className={Styles.percent}>{a.percent}%</span>
+              {state.surveyResult.map((a) => (
+                <li key="0">
+                  <img src="" />
+                  <span className={Styles.answer}>React Js</span>
+                  <span className={Styles.percent}>50%</span>
                 </li>
               ))}
             </FlipMove>
@@ -53,7 +45,8 @@ const SurveyResult: React.FC<Props> = () => {
           </>
         )}
 
-        <Loading />
+        {state.isLoading && <Loading />}
+        {state.error && <Error error={state.error} reload={() => false} />}
       </div>
 
       <Footer />
